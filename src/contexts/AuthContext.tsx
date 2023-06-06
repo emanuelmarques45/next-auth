@@ -1,4 +1,4 @@
-import { api, controller } from "@/lib/services/api"
+import { api } from "@/lib/services/api"
 import Router from "next/router"
 import { destroyCookie, parseCookies, setCookie } from "nookies"
 import { createContext, useContext, useEffect, useState } from "react"
@@ -10,7 +10,6 @@ type AuthContextProps = {
   signIn: ({ email, password }: SignInData) => Promise<void>
   signOut: () => void
 }
-
 export const AuthContext = createContext({} as AuthContextProps)
 
 type AuthContextProviderProps = {
@@ -47,8 +46,12 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
   }
 
   async function signOut() {
-    console.log("ola")
     destroyCookie(undefined, "nextauth.token", {})
+    await new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(null)
+      }, 2000)
+    })
     Router.push("/signin")
   }
 

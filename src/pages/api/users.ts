@@ -11,12 +11,12 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === "GET") {
-    const token = getHeaderToken(req)
-    const { error, decodedToken } = await verifyToken(token)
+    // const token = getHeaderToken(req)
+    // const { error, decodedToken } = await verifyToken(token)
 
-    if (error) {
-      return res.status(401).json({ message: "Unauthorized" })
-    }
+    // if (error) {
+    //   return res.status(401).json({ message: "Unauthorized" })
+    // }
 
     if (req.query.username) {
       const user = await getUserByUsername(req.query.username as string)
@@ -37,16 +37,16 @@ export default async function handler(
 
       return res.status(404).json({ message: "User not found" })
     }
-    if (req.query.token) {
-      const sqlQuery = `SELECT id, username, email FROM user WHERE id = ?`
-      const [rows] = await query(sqlQuery, [decodedToken?.user.id])
+    // if (req.query.token) {
+    //   const sqlQuery = `SELECT id, username, email FROM user WHERE id = ?`
+    //   const [rows] = await query(sqlQuery, [decodedToken?.user.id])
 
-      if (rows.length) {
-        return res.status(200).json(rows[0])
-      }
+    //   if (rows.length) {
+    //     return res.status(200).json(rows[0])
+    //   }
 
-      return res.status(404).json({ message: "User not found" })
-    }
+    //   return res.status(404).json({ message: "User not found" })
+    // }
 
     const sqlQuery = `SELECT id, username, email FROM user`
     const [rows] = await query(sqlQuery)

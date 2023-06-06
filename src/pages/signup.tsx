@@ -4,15 +4,36 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useAuth } from "@/contexts/AuthContext"
 import { useState } from "react"
 import { SignUpSchemaType, signUpSchema } from "@/lib/utils/schemas/signUp"
+import {
+  ErrorMessage,
+  Form,
+  InputBox,
+  formAnimation
+} from "@/styles/components/form"
+import { Container } from "@/styles/signup"
+import { Button } from "@/styles/components/button"
+import Router from "next/router"
+import { ThreeCircles, ThreeDots } from "react-loader-spinner"
+import { debounce } from "@/lib/utils/debounce"
+import { api } from "@/lib/services/api"
 
 export default function SignUp() {
   const auth = useAuth()
+  const [usernameStatus, setUsernameStatus] = useState<{
+    status: number
+    message: string
+  } | null>({ status: 0, message: "" })
   const [serverError, setServerError] = useState(null)
+  const [isLoading, setIsLoading] = useState(false)
+  const [usernameIsLoading, setUsernameIsLoading] = useState(false)
 
   async function onSubmit({ username, email, password }: SignUpData) {
     try {
+      setIsLoading(true)
       await auth.signUp({ username, email, password })
+      setIsLoading(false)
     } catch (error: any) {
+      setIsLoading(false)
       setServerError(error.response.data.message)
     }
   }
@@ -25,6 +46,34 @@ export default function SignUp() {
     resolver: zodResolver(signUpSchema)
   })
 
+  function handleGetUser(username: string) {
+    if (username.length < 3) return setUsernameStatus(null)
+    debounce(async () => {
+      try {
+        setUsernameIsLoading(true)
+        await api().get("/users", {
+          params: {
+            username
+          }
+        })
+        setUsernameIsLoading(false)
+        setUsernameStatus({
+          status: 0,
+          message: "This username is not available"
+        })
+      } catch (error: any) {
+        setUsernameIsLoading(false)
+        if (username.length >= 3) {
+          return setUsernameStatus({
+            status: 1,
+            message: "This username is available"
+          })
+        }
+        setUsernameStatus(null)
+      }
+    }, 500)
+  }
+
   return (
     <>
       <Head>
@@ -33,19 +82,119 @@ export default function SignUp() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <form onSubmit={handleSubmit(data => onSubmit(data))}>
-        <input {...register("username")} type="text" placeholder="Username" />
-        {errors.username?.message && <p>{errors.username?.message}</p>}
-
-        <input {...register("email")} type="text" placeholder="Email" />
-        {errors.email?.message && <p>{errors.email?.message}</p>}
-
-        <input {...register("password")} type="text" placeholder="Password" />
-        {errors.password?.message && <p>{errors.password?.message}</p>}
-
-        {serverError && <p>{serverError}</p>}
-        <button>Sign Up</button>
-      </form>
+      <Container>
+        <Form
+          onSubmit={handleSubmit(data => onSubmit(data))}
+          variants={formAnimation}
+          initial="initial"
+          animate="animate"
+          exit="exit"
+        >
+          <fieldset>
+            <legend>Sign Up</legend>
+            <InputBox>
+              {usernameStatus && (
+                <p
+                  style={{
+                    position: "absolute",
+                    top: "-1.8rem",
+                    right: ".5rem",
+                    fontSize: "1.3rem",
+                    color:
+                      usernameStatus.status === 0
+                        ? "var(--clr-indian-red)"
+                        : "var(--clr-green)",
+                    fontWeight: "600"
+                  }}
+                >
+                  {usernameStatus.message}
+                </p>
+              )}
+              {usernameIsLoading && (
+                <ThreeCircles
+                  height={30}
+                  width={40}
+                  color="var(--clr-lochmara)"
+                  wrapperStyle={{
+                    position: "absolute",
+                    right: "0.5rem",
+                    bottom: "0.5rem"
+                  }}
+                  visible={true}
+                  ariaLabel="three-circles-rotating"
+                  outerCircleColor=""
+                  innerCircleColor=""
+                  middleCircleColor=""
+                />
+              )}
+              <input
+                {...register("username")}
+                id="username"
+                type="text"
+                placeholder="Username"
+                onChange={ev => handleGetUser(ev.currentTarget.value)}
+              />
+              <label htmlFor="username">Username</label>
+              {errors.username?.message && (
+                <ErrorMessage>
+                  {errors.username.message.toString()}
+                </ErrorMessage>
+              )}
+            </InputBox>
+            <InputBox>
+              <input
+                {...register("email")}
+                id="email"
+                type="text"
+                placeholder="Email"
+              />
+              <label htmlFor="email">Email</label>
+              {errors.email?.message && (
+                <ErrorMessage>{errors.email.message.toString()}</ErrorMessage>
+              )}
+            </InputBox>
+            <InputBox>
+              <input
+                {...register("password")}
+                id="password"
+                type="password"
+                placeholder="Password"
+              />
+              <label htmlFor="password">Password</label>
+              {errors.password?.message && (
+                <ErrorMessage>
+                  {errors.password.message.toString()}
+                </ErrorMessage>
+              )}
+            </InputBox>
+          </fieldset>
+          {serverError && <ErrorMessage>{serverError}</ErrorMessage>}
+          <Button>
+            {isLoading ? (
+              <ThreeDots
+                height={13}
+                width={50}
+                radius={9}
+                color="var(--clr-white)"
+                ariaLabel="three-dots-loading"
+                wrapperStyle={{
+                  display: "block",
+                  marginInline: "auto"
+                }}
+                visible={true}
+              />
+            ) : (
+              "Sign Up"
+            )}
+          </Button>
+          <p style={{ marginTop: "2rem", textAlign: "center" }}>
+            Already have an account?
+          </p>
+          <Button type="button" onClick={() => Router.push("/signin")}>
+            Sign In
+          </Button>
+        </Form>
+      </Container>
     </>
   )
 }

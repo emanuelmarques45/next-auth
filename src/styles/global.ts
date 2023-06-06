@@ -7,6 +7,8 @@ export const devices = {
 }
 
 export default createGlobalStyle`
+  /* @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap'); */
+
   :root {
     --clr-athens-gray: hsl(220, 19%, 94%);
     --clr-oslo-gray: hsl(220, 3%, 58%);
@@ -15,6 +17,8 @@ export default createGlobalStyle`
     --clr-non-photo-blue: hsl(192, 76%, 75%);
     --clr-white: hsl(0, 0%, 100%);
     --clr-rich-black: hsl(218, 24%, 9%);
+    --clr-indian-red: hsl(354, 65%, 59%);
+    --clr-green: hsl(130, 58%, 40%);
 
     --br-default: 0.3rem;
 
@@ -33,7 +37,7 @@ export default createGlobalStyle`
   html, body {
     height: 100%;
     font-size: 1.6rem;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Montserrat', sans-serif;
   }
 
   button {

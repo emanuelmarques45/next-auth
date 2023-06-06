@@ -38,7 +38,6 @@ export default function Dashboard({ users }: DashboardProps) {
           </div>
         )
       })}
-      {/* <input type="text" onChange={ev => getUser(ev.currentTarget.value)} /> */}
       <button onClick={() => auth.signOut()}>Sign Out</button>
     </>
   )
