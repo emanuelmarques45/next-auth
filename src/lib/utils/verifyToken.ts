@@ -1,7 +1,7 @@
 import jwt, { VerifyErrors, JwtPayload } from "jsonwebtoken"
 
 type VerifyResponse = {
-  decodedToken: JwtPayload | undefined
+  decodedToken: string | JwtPayload | undefined
   error: VerifyErrors | null
 }
 
