@@ -2,6 +2,6 @@ type User = {
   id: string
   username: string
   email: string
-  password
+  password: string
   verified: boolean
 }
