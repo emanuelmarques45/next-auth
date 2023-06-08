@@ -6,7 +6,11 @@ import { createContext, useContext, useEffect, useState } from "react"
 type AuthContextProps = {
   isAuthenticated: boolean
   user: User | null
-  signUp: ({ username, email, password }: SignUpData) => Promise<void>
+  signUp: ({
+    username,
+    email,
+    password
+  }: SignUpData) => Promise<{ message: string }>
   signIn: ({ email, password }: SignInData) => Promise<void>
   signOut: () => void
 }
@@ -33,16 +37,20 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
       maxAge: 60 * 60 * 1,
       sameSite: "strict"
     })
+    api().defaults.headers["Authorization"] = `Bearer ${token}`
     Router.push("/dashboard")
   }
 
   async function signUp({ username, email, password }: SignUpData) {
-    await api().post("/auth/signup", {
+    const { data } = await api().post("/auth/signup", {
       username,
       email,
       password
     })
-    Router.push("/signin")
+    setTimeout(() => {
+      Router.push("/signin")
+    }, 3000)
+    return data
   }
 
   async function signOut() {

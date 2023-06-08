@@ -30,14 +30,29 @@ export default function Dashboard({ users }: DashboardProps) {
   return (
     <>
       <h1 style={{ marginBottom: "5rem" }}>Dashboard</h1>
-      {users.map((user, idx) => {
-        return (
-          <div key={user.id} style={{ border: "1px solid black" }}>
-            <h1>{user.username}</h1>
-            <h3>{user.email}</h3>
-          </div>
-        )
-      })}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(350px, 1fr))",
+          gap: "2rem"
+        }}
+      >
+        {users.map((user, idx) => {
+          return (
+            <div
+              key={user.id}
+              style={{
+                border: "1px solid black",
+                borderRadius: "2rem",
+                padding: "2rem"
+              }}
+            >
+              <h1>{user.username}</h1>
+              <h3>{user.email}</h3>
+            </div>
+          )
+        })}
+      </div>
       <button onClick={() => auth.signOut()}>Sign Out</button>
     </>
   )

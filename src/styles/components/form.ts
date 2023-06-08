@@ -61,7 +61,7 @@ const InputBox = styled.div`
 
 const ErrorMessage = styled.p`
   color: var(--clr-indian-red);
-  margin-top: 2rem;
+  margin: 1rem 0;
 `
 
 export const formAnimation = {

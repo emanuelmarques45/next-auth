@@ -7,8 +7,6 @@ export const devices = {
 }
 
 export default createGlobalStyle`
-  /* @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap'); */
-
   :root {
     --clr-athens-gray: hsl(220, 19%, 94%);
     --clr-oslo-gray: hsl(220, 3%, 58%);

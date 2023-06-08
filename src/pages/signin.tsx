@@ -14,6 +14,9 @@ import {
   ErrorMessage
 } from "@/styles/components/form"
 import { Button } from "@/styles/components/button"
+import { api } from "@/lib/services/api"
+import { GetServerSideProps, GetServerSidePropsContext } from "next"
+import { parseCookies } from "nookies"
 
 export default function SignIn() {
   const auth = useAuth()
@@ -108,4 +111,20 @@ export default function SignIn() {
       </Container>
     </>
   )
+}
+
+export async function getServerSideProps(ctx: GetServerSidePropsContext) {
+  const { "nextauth.token": token } = parseCookies(ctx)
+
+  if (token) {
+    return {
+      redirect: {
+        destination: "/dashboard",
+        permanent: false
+      }
+    }
+  }
+  return {
+    props: {}
+  }
 }
