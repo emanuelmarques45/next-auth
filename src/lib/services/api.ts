@@ -19,6 +19,7 @@ export function api(
   //   return config
   // })
 
+  api.defaults.headers.common["Acess-Control-Allow-Origin"] = "*"
   if (token) api.defaults.headers.common["Authorization"] = `Bearer ${token}`
 
   return api
