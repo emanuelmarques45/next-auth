@@ -34,8 +34,8 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
       password
     })
     setCookie(undefined, "nextauth.token", token, {
-      maxAge: 60 * 60 * 1,
-      sameSite: "strict"
+      maxAge: 60 * 60 * 1
+      // sameSite: "strict"
     })
     api().defaults.headers["Authorization"] = `Bearer ${token}`
     Router.push("/dashboard")
