@@ -1,0 +1,25 @@
+.main {
+  height: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  max-width: 80%;
+  margin-inline: auto;
+}
+
+.main form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 50%;
+}
+
+.main form input {
+  border: 1px solid #000;
+  border-radius: 0.5rem;
+  font-size: 2rem;
+}
+
+.main form button {
+  font-size: 2rem;
+}
