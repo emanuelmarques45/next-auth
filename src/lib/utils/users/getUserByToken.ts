@@ -1,22 +1,27 @@
-import jwt, { VerifyErrors } from "jsonwebtoken"
-import { getUserById } from "./getUserById"
+import jwt, { VerifyErrors, JwtPayload } from "jsonwebtoken"
 
 type VerifyResponse = {
   decodedToken: JwtPayload | undefined
   error: VerifyErrors | null
 }
 
-type JwtPayload = {
-  user: User
-}
+export async function getUserByToken(
+  token: string | undefined
+): Promise<VerifyResponse> {
+  return new Promise<VerifyResponse>(resolve => {
+    if (!token) {
+      resolve({
+        error: new Error("Token is undefined") as VerifyErrors,
+        decodedToken: undefined
+      })
+      return
+    }
 
-export async function getUserByToken(token: string | undefined) {
-  return new Promise<User | jwt.VerifyErrors | jwt.JwtPayload>(resolve => {
-    jwt.verify(token!, process.env.PRIVATE_KEY, async (error, decodedToken) => {
+    jwt.verify(token, process.env.PRIVATE_KEY!, async (error, decodedToken) => {
       if (error) {
         resolve({ error, decodedToken: undefined })
       } else {
-        resolve({ decodedToken, error: null })
+        resolve({ decodedToken: decodedToken as JwtPayload, error: null })
       }
     })
   })

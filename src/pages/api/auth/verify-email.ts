@@ -1,6 +1,7 @@
 import { query } from "@/lib/services/db"
 import { getUserByToken } from "@/lib/utils/users/getUserByToken"
 import type { NextApiRequest, NextApiResponse } from "next"
+import { VerifyErrors } from "jsonwebtoken"
 
 export default async function handler(
   req: NextApiRequest,
