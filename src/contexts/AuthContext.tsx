@@ -1,11 +1,10 @@
 import { api } from "@/lib/services/api"
 import Router from "next/router"
-import { destroyCookie, parseCookies, setCookie } from "nookies"
-import { createContext, useContext, useEffect, useState } from "react"
+import { destroyCookie, setCookie } from "nookies"
+import { createContext, useContext, useState } from "react"
 
 type AuthContextProps = {
   isAuthenticated: boolean
-  user: User | null
   signUp: ({
     username,
     email,
@@ -21,11 +20,6 @@ type AuthContextProviderProps = {
 }
 
 export function AuthContextProvider({ children }: AuthContextProviderProps) {
-  const [user, setUser] = useState<AuthContextProps["user"]>(null)
-  useEffect(() => {
-    const { "nextauth.token": token } = parseCookies()
-  }, [])
-
   async function signIn({ email, password }: SignInData) {
     const {
       data: { token }
@@ -35,7 +29,6 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
     })
     setCookie(undefined, "nextauth.token", token, {
       maxAge: 60 * 60 * 1
-      // sameSite: "strict"
     })
     api().defaults.headers["Authorization"] = `Bearer ${token}`
     Router.push("/dashboard")
@@ -66,7 +59,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
   return (
     <>
       <AuthContext.Provider
-        value={{ isAuthenticated: true, user, signIn, signUp, signOut }}
+        value={{ isAuthenticated: true, signIn, signUp, signOut }}
       >
         {children}
       </AuthContext.Provider>

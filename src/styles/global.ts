@@ -38,7 +38,20 @@ export default createGlobalStyle`
     font-family: 'Montserrat', sans-serif;
   }
 
+  #__next {
+    height: 100%;
+  }
+
   button {
     cursor: pointer;
+  }
+
+
+  main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
   }
 `

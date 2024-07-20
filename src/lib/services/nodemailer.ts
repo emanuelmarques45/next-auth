@@ -15,7 +15,7 @@ export async function sendEmailVerification(email: string, token: string) {
       secure: false,
       auth: {
         user: "emanuelfelipe9230@gmail.com",
-        pass: "zrnlhubrlzastosl"
+        pass: "mrem dmwa hxbf dxvo"
       }
     })
 

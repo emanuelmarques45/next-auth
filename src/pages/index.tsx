@@ -1,3 +1,4 @@
+import { Button } from "@/styles/components/button"
 import Head from "next/head"
 import Router from "next/router"
 
@@ -10,8 +11,10 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>This is the homepage</main>
-      <button onClick={() => Router.push("/signin")}>Sign in</button>
+      <main>
+        <h1>This is the homepage</h1>
+        <Button onClick={() => Router.push("/signin")}>Sign in</Button>
+      </main>
     </>
   )
 }

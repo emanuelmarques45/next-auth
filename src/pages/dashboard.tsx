@@ -1,6 +1,7 @@
 import { useAuth } from "@/contexts/AuthContext"
 import { api } from "@/lib/services/api"
 import { debounce } from "@/lib/utils/debounce"
+import { getUserByToken } from "@/lib/utils/users/getUserByToken"
 import { GetServerSidePropsContext } from "next"
 import { parseCookies } from "nookies"
 import { useState } from "react"
@@ -71,6 +72,8 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   }
 
   const { data: users } = await api(ctx).get("/users")
+
+  console.log(users)
 
   return {
     props: { users }
