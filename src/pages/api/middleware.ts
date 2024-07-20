@@ -4,10 +4,7 @@ export function middleware() {
   const res = NextResponse.next()
 
   res.headers.append("Access-Control-Allow-Credentials", "true")
-  res.headers.append(
-    "Access-Control-Allow-Origin",
-    "https://next-app-two-liart.vercel.app"
-  )
+  res.headers.append("Access-Control-Allow-Origin", "*")
   res.headers.append(
     "Access-Control-Allow-Methods",
     "GET,DELETE,PATCH,POST,PUT"
@@ -21,5 +18,5 @@ export function middleware() {
 }
 
 export const config = {
-  matcher: "/api/:path*"
+  matcher: "/src/pages/api/:path*"
 }
