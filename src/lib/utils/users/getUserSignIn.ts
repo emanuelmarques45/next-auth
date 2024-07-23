@@ -9,9 +9,7 @@ export async function getUserSignIn(email: string, password: string) {
   if (rows.length) {
     const user: User = rows[0]
 
-    const pwd = bcrypt.hashSync("123", 10)
-
-    if (bcrypt.compareSync("123", pwd)) {
+    if (bcrypt.compareSync(password, user.password)) {
       const { password: _, ...userWithoutPassword } = user
       return { user: userWithoutPassword }
     }

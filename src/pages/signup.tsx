@@ -1,5 +1,5 @@
 import Head from "next/head"
-import { set, useForm } from "react-hook-form"
+import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useAuth } from "@/contexts/AuthContext"
 import { useEffect, useState } from "react"
@@ -30,8 +30,8 @@ export default function SignUp() {
   const [serverErrors, setServerErrors] = useState<string[] | null>([])
   const [isLoading, setIsLoading] = useState(false)
   const [usernameIsLoading, setUsernameIsLoading] = useState(false)
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false)
   const [verifyMessage, setVerifyMessage] = useState("")
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false)
 
   async function onSubmit({ username, email, password }: SignUpData) {
     try {

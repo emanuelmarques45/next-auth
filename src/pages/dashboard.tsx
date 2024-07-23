@@ -73,8 +73,6 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
 
   const { data: users } = await api(ctx).get("/users")
 
-  console.log(users)
-
   return {
     props: { users }
   }

@@ -25,9 +25,10 @@ export default async function handler(
       return res.status(400).json({ errors: validate.errors })
     }
 
-    const hashedPassword = bcrypt.hashSync(password, 10)
-    const id = crypto.randomUUID()
     const sqlQuery = `INSERT INTO user (id, username, email, password) VALUES (?, ?, ?, ?)`
+    const id = crypto.randomUUID()
+    const salt = bcrypt.genSaltSync(10)
+    const hashedPassword = bcrypt.hashSync(password, salt)
     const values = [id, username, email, hashedPassword]
     const errors: string[] = []
 

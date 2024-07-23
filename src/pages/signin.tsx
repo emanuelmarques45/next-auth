@@ -14,14 +14,15 @@ import {
   ErrorMessage
 } from "@/styles/components/form"
 import { Button } from "@/styles/components/button"
-import { api } from "@/lib/services/api"
-import { GetServerSideProps, GetServerSidePropsContext } from "next"
+import { GetServerSidePropsContext } from "next"
 import { parseCookies } from "nookies"
+import { EyeFill, EyeSlash } from "styled-icons/bootstrap"
 
 export default function SignIn() {
   const auth = useAuth()
   const [serverError, setServerError] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false)
 
   async function onSubmit({ email, password }: SignInData) {
     try {
@@ -68,11 +69,34 @@ export default function SignIn() {
               )}
             </InputBox>
             <InputBox>
+              {isPasswordVisible ? (
+                <EyeFill
+                  size={30}
+                  style={{
+                    position: "absolute",
+                    right: "1rem",
+                    top: "0.5rem",
+                    cursor: "pointer"
+                  }}
+                  onClick={() => setIsPasswordVisible(false)}
+                />
+              ) : (
+                <EyeSlash
+                  size={30}
+                  style={{
+                    position: "absolute",
+                    right: "1rem",
+                    top: "0.5rem",
+                    cursor: "pointer"
+                  }}
+                  onClick={() => setIsPasswordVisible(true)}
+                />
+              )}
               <input
                 {...register("password")}
                 id="password"
+                type={isPasswordVisible ? "text" : "password"}
                 placeholder="Password"
-                type="password"
               />
               <label htmlFor="password">Password</label>
               {errors.password?.message && (
